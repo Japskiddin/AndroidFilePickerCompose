@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">AndroidFilePickerCompose</string>
+    <string name="afp_app_name">AndroidFilePickerCompose</string>
+    <string name="afp_back">Back</string>
 </resources>
