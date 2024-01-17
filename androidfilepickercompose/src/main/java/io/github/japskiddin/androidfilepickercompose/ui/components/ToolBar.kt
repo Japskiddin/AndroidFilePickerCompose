@@ -49,7 +49,7 @@ fun ToolBar(
 @Preview(name = "Toolbar")
 @Composable
 fun ToolBarPreview() {
-    AndroidFilePickerComposeTheme {
+    AndroidFilePickerComposeTheme(dynamicColor = false) {
         ToolBar(title = stringResource(id = R.string.afp_app_name),
             onBackClick = {},
             actions = {}
