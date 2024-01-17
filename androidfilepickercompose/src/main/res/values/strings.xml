@@ -3,4 +3,6 @@
     <string name="afp_back">Back</string>
     <string name="create_directory">Create directory</string>
     <string name="afp_select">Select</string>
+    <string name="directory">Directory</string>
+    <string name="file">File</string>
 </resources>
