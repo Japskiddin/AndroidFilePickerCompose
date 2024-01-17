@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.hilt)
+    kotlin("kapt")
 }
 
 /**
@@ -68,6 +70,9 @@ dependencies {
     implementation(libs.jetbrains.kotlin.stdlib)
 
     implementation(libs.material)
+
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
 
     implementation(project(":androidfilepickercompose"))
 }
