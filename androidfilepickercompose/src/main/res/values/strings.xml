@@ -5,4 +5,5 @@
     <string name="afp_select">Select</string>
     <string name="directory">Directory</string>
     <string name="file">File</string>
+    <string name="storage_internal">Internal Storage</string>
 </resources>

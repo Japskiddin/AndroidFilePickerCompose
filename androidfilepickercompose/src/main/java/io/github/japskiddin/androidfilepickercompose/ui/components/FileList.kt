@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -39,7 +40,7 @@ fun FileItem(modifier: Modifier = Modifier, file: PickerFile) {
                 painterResource(id = R.drawable.ic_afp_file)
             },
             contentDescription = file.filename,
-            modifier = modifier.size(36.dp)
+            modifier = modifier.size(36.dp).align(Alignment.CenterVertically)
         )
         Column(modifier = modifier.padding(start = 16.dp)) {
             Text(text = file.filename)
