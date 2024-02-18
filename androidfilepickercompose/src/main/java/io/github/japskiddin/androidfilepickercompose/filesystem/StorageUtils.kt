@@ -1,4 +1,4 @@
-package io.github.japskiddin.androidfilepickercompose.utils
+package io.github.japskiddin.androidfilepickercompose.filesystem
 
 import android.annotation.SuppressLint
 import android.annotation.TargetApi
@@ -18,6 +18,9 @@ import io.github.japskiddin.androidfilepickercompose.BuildConfig
 import io.github.japskiddin.androidfilepickercompose.R
 import io.github.japskiddin.androidfilepickercompose.data.model.StorageBean
 import io.github.japskiddin.androidfilepickercompose.data.model.StorageDirectory
+import io.github.japskiddin.androidfilepickercompose.filesystem.usb.SingletonUsbOtg
+import io.github.japskiddin.androidfilepickercompose.utils.OTGUtil
+import io.github.japskiddin.androidfilepickercompose.utils.checkStoragePermission
 import java.io.File
 import java.io.IOException
 import java.lang.reflect.Field
@@ -57,7 +60,7 @@ fun getStorageDirectoriesNew(context: Context): ArrayList<StorageDirectory> {
         if (INTERNAL_SHARED_STORAGE == name) {
             name = context.getString(R.string.storage_internal)
         }
-        val icon: Int = if (!volume.isRemovable) {
+        @DrawableRes val icon: Int = if (!volume.isRemovable) {
             R.drawable.ic_phone_android
         } else {
             // HACK: There is no reliable way to distinguish USB and SD external storage
@@ -142,8 +145,10 @@ fun getStorageDirectoriesLegacy(context: Context): ArrayList<StorageDirectory> {
         val f = File(s)
         if (!rv.contains(s) && canListFiles(f)) rv.add(s)
     }
-    val usb: File = getUsbDrive()
-    if (!rv.contains(usb.path)) rv.add(usb.path)
+    val usb = getUsbDrive()
+    if (usb != null && !rv.contains(usb.path)) {
+        rv.add(usb.path)
+    }
     if (SingletonUsbOtg.getInstance().isDeviceConnected()) {
         rv.add(OTGUtil.PREFIX_OTG + "/")
     }
@@ -152,20 +157,25 @@ fun getStorageDirectoriesLegacy(context: Context): ArrayList<StorageDirectory> {
     val volumes: ArrayList<StorageDirectory> = ArrayList()
     for (file in rv) {
         val f = File(file)
-        @DrawableRes var icon: Int
-        if ("/storage/emulated/legacy" == file || "/storage/emulated/0" == file || "/mnt/sdcard" == file) {
-            icon = R.drawable.ic_phone_android
-        } else if ("/storage/sdcard1" == file) {
-            icon = R.drawable.ic_sd_storage
-        } else if ("/" == file) {
-            icon = R.drawable.ic_drawer_root
-        } else {
-            icon = R.drawable.ic_sd_storage
+        @DrawableRes val icon: Int = when (file) {
+            "/storage/emulated/legacy", "/storage/emulated/0", "/mnt/sdcard" -> {
+                R.drawable.ic_phone_android
+            }
+
+            "/storage/sdcard1" -> {
+                R.drawable.ic_sd_storage
+            }
+
+            "/" -> {
+                R.drawable.ic_drawer_root
+            }
+
+            else -> {
+                R.drawable.ic_sd_storage
+            }
         }
-        @StorageNaming.DeviceDescription val deviceDescription: Int =
-            StorageNaming.getDeviceDescriptionLegacy(f)
-        val name: String =
-            StorageNamingHelper.getNameForDeviceDescription(context, f, deviceDescription)
+        @DeviceDescription val deviceDescription: Int = getDeviceDescriptionLegacy(f)
+        val name: String = getNameForDeviceDescription(context, f, deviceDescription)
         volumes.add(StorageDirectory(file, name, icon))
     }
     return volumes

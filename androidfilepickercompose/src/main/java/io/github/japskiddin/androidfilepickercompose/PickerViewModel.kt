@@ -3,7 +3,7 @@ package io.github.japskiddin.androidfilepickercompose
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import io.github.japskiddin.androidfilepickercompose.data.model.PickerFile
-import io.github.japskiddin.androidfilepickercompose.utils.getStorageData
+import io.github.japskiddin.androidfilepickercompose.filesystem.getStorageData
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
