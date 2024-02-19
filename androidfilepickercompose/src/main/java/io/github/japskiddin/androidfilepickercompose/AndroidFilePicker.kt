@@ -25,6 +25,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import io.github.japskiddin.androidfilepickercompose.data.model.PickerFile
+import io.github.japskiddin.androidfilepickercompose.data.model.StorageDirectory
+import io.github.japskiddin.androidfilepickercompose.ui.components.FileList
+import io.github.japskiddin.androidfilepickercompose.ui.components.StorageList
 import io.github.japskiddin.androidfilepickercompose.ui.components.ToolBar
 import io.github.japskiddin.androidfilepickercompose.ui.theme.AndroidFilePickerComposeTheme
 
@@ -44,10 +47,12 @@ fun AndroidFilePicker(
             color = MaterialTheme.colorScheme.background
         ) {
             val currentPickerFile by pickerViewModel.currentPickerFile.collectAsState()
+            val storages by pickerViewModel.storages.collectAsState()
             AndroidFilePickerContent(
                 currentPickerFile = currentPickerFile,
                 isDirectorySelect = isDirectorySelect,
-                canCreateDirectory = canCreateDirectory
+                canCreateDirectory = canCreateDirectory,
+                storages = storages
             )
         }
     }
@@ -58,7 +63,8 @@ fun AndroidFilePickerContent(
     modifier: Modifier = Modifier,
     isDirectorySelect: Boolean,
     canCreateDirectory: Boolean,
-    currentPickerFile: PickerFile?
+    currentPickerFile: PickerFile?,
+    storages: List<StorageDirectory>
 ) {
     Scaffold(
         topBar = {
@@ -95,6 +101,11 @@ fun AndroidFilePickerContent(
                             Text(text = stringResource(id = R.string.afp_select))
                         }
                     }
+                    if (currentPickerFile == null) {
+                        StorageList(storages = storages)
+                    } else {
+                        FileList(files = mutableListOf())
+                    }
                 }
             }
         },
@@ -117,7 +128,8 @@ fun AndroidFilePickerPreview() {
         AndroidFilePickerContent(
             currentPickerFile = null,
             isDirectorySelect = true,
-            canCreateDirectory = false
+            canCreateDirectory = false,
+            storages = emptyList()
         )
     }
 }
