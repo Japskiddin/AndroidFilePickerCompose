@@ -31,6 +31,7 @@ import io.github.japskiddin.androidfilepickercompose.ui.components.FileList
 import io.github.japskiddin.androidfilepickercompose.ui.components.StorageList
 import io.github.japskiddin.androidfilepickercompose.ui.components.ToolBar
 import io.github.japskiddin.androidfilepickercompose.ui.theme.AndroidFilePickerComposeTheme
+import java.io.File
 
 @Composable
 fun AndroidFilePicker(
@@ -57,7 +58,16 @@ fun AndroidFilePicker(
                 canCreateDirectory = canCreateDirectory,
                 storages = storages,
                 isBackAvailable = isBackAvailable,
-                toolbarTitle = toolbarTitle
+                toolbarTitle = toolbarTitle,
+                onStorageClick = { storage ->
+                    pickerViewModel.selectStorage(storage)
+                },
+                onFileClick = { pickerFile ->
+                    pickerViewModel.selectFile(pickerFile)
+                },
+                onBackPressed = {
+                    pickerViewModel.navigateUp()
+                }
             )
         }
     }
@@ -72,6 +82,9 @@ fun AndroidFilePickerContent(
     storages: List<StorageDirectory>,
     isBackAvailable: Boolean,
     toolbarTitle: String,
+    onStorageClick: (StorageDirectory) -> Unit,
+    onFileClick: (PickerFile) -> Unit,
+    onBackPressed: () -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -79,7 +92,7 @@ fun AndroidFilePickerContent(
                 title = toolbarTitle.ifEmpty { stringResource(id = R.string.afp_select_storage) },
                 navigationIcon = {
                     if (isBackAvailable) {
-                        IconButton(onClick = { }) {
+                        IconButton(onClick = onBackPressed) {
                             Icon(
                                 imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
                                 contentDescription = stringResource(
@@ -122,10 +135,21 @@ fun AndroidFilePickerContent(
                     if (currentPickerFile == null) {
                         StorageList(
                             storages = storages,
-                            onStorageClick = {},
+                            onStorageClick = onStorageClick,
                         )
                     } else {
-                        FileList(files = mutableListOf())
+                        val files: MutableList<PickerFile> = mutableListOf()
+                        currentPickerFile.path.let { filepath ->
+                            File(filepath).listFiles().let { array ->
+                                for (file in array) {
+                                    files.add(PickerFile(file.path, file.name, file.isDirectory))
+                                }
+                            }
+                        }
+                        FileList(
+                            files = files,
+                            onFileClick = onFileClick,
+                        )
                     }
                 }
             }
@@ -165,6 +189,9 @@ fun AndroidFilePickerPreview() {
             storages = storages,
             isBackAvailable = false,
             toolbarTitle = "Title",
+            onStorageClick = {},
+            onFileClick = {},
+            onBackPressed = {},
         )
     }
 }

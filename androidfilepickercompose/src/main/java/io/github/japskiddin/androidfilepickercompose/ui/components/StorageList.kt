@@ -27,10 +27,14 @@ import io.github.japskiddin.androidfilepickercompose.ui.theme.AndroidFilePickerC
 @Composable
 fun StorageList(
     storages: List<StorageDirectory>,
-    onStorageClick: () -> Unit,
+    onStorageClick: (StorageDirectory) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    LazyColumn(modifier = modifier.fillMaxSize().padding(top = 8.dp, bottom = 8.dp)) {
+    LazyColumn(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(top = 8.dp, bottom = 8.dp)
+    ) {
         items(items = storages, key = { storage -> storage.path }) { storage ->
             StorageItem(
                 storage = storage,
@@ -45,12 +49,12 @@ fun StorageList(
 fun StorageItem(
     modifier: Modifier = Modifier,
     storage: StorageDirectory,
-    onStorageClick: () -> Unit,
+    onStorageClick: (StorageDirectory) -> Unit,
 ) {
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .clickable { onStorageClick() }
+            .clickable { onStorageClick(storage) }
             .padding(top = 8.dp, bottom = 8.dp, start = 16.dp, end = 16.dp)
     ) {
         Image(
@@ -65,12 +69,14 @@ fun StorageItem(
             Text(
                 text = storage.path,
                 style = MaterialTheme.typography.bodyLarge,
-                fontWeight = FontWeight.Medium
+                fontWeight = FontWeight.Medium,
+                color = MaterialTheme.colorScheme.onSurface,
             )
             Text(
                 text = storage.name,
                 style = MaterialTheme.typography.bodyMedium,
-                modifier = modifier.padding(top = 4.dp)
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
+                modifier = modifier.padding(top = 4.dp),
             )
         }
     }
