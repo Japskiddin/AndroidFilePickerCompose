@@ -40,15 +40,17 @@ fun FileItem(modifier: Modifier = Modifier, file: PickerFile) {
                 painterResource(id = R.drawable.ic_afp_file)
             },
             contentDescription = file.name,
-            modifier = modifier.size(36.dp).align(Alignment.CenterVertically)
+            modifier = modifier
+                .size(36.dp)
+                .align(Alignment.CenterVertically)
         )
         Column(modifier = modifier.padding(start = 16.dp)) {
             Text(text = file.name)
             Text(
                 text = if (file.isDirectory) {
-                    stringResource(id = R.string.directory)
+                    stringResource(id = R.string.afp_directory)
                 } else {
-                    stringResource(id = R.string.file)
+                    stringResource(id = R.string.afp_file)
                 }
             )
         }

@@ -32,9 +32,9 @@ fun getNameForDeviceDescription(
     @DeviceDescription deviceDescription: Int
 ): String {
     return when (deviceDescription) {
-        STORAGE_INTERNAL -> context.getString(R.string.storage_internal)
-        STORAGE_SD_CARD -> context.getString(R.string.storage_sd_card)
-        ROOT -> context.getString(R.string.root_directory)
+        STORAGE_INTERNAL -> context.getString(R.string.afp_storage_internal)
+        STORAGE_SD_CARD -> context.getString(R.string.afp_storage_sd_card)
+        ROOT -> context.getString(R.string.afp_root_directory)
         NOT_KNOWN -> file.name
         else -> file.name
     }

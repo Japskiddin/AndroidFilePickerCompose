@@ -55,7 +55,7 @@ fun getStorageDirectoriesNew(context: Context): ArrayList<StorageDirectory> {
         val path: File = getVolumeDirectory(volume)
         var name = volume.getDescription(context)
         if (INTERNAL_SHARED_STORAGE == name) {
-            name = context.getString(R.string.storage_internal)
+            name = context.getString(R.string.afp_storage_internal)
         }
         @DrawableRes val icon: Int = if (!volume.isRemovable) {
             R.drawable.ic_phone_android
