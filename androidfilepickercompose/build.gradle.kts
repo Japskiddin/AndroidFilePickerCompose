@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
-    alias(libs.plugins.hilt)
+    alias(libs.plugins.dagger.hilt)
     kotlin("kapt")
 }
 
@@ -100,7 +100,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.lifecycle.livedata.ktx)
     implementation(libs.androidx.core.ktx)
-    implementation(libs.documentfile)
+    implementation(libs.androidx.documentfile)
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.runtime.livedata)
@@ -113,7 +113,7 @@ dependencies {
     implementation(libs.jetbrains.kotlin.stdlib)
     implementation(libs.jetbrains.kotlinx.coroutines.android)
 
-    implementation(libs.hilt.navigation.compose)
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
+    implementation(libs.dagger.hilt.navigation.compose)
+    implementation(libs.dagger.hilt.android)
+    kapt(libs.dagger.hilt.compiler)
 }

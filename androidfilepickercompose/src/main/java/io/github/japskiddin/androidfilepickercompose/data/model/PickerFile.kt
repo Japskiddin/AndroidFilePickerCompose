@@ -2,17 +2,17 @@ package io.github.japskiddin.androidfilepickercompose.data.model
 
 data class PickerFile(
     @JvmField
-    val filepath: String,
+    val path: String,
     @JvmField
-    val filename: String,
+    val name: String,
     @JvmField
     val isDirectory: Boolean
 ) : Comparable<PickerFile> {
     override fun compareTo(other: PickerFile): Int {
-        return filepath.compareTo(other.filepath)
+        return path.compareTo(other.path)
     }
 
     override fun toString(): String {
-        return "$filepath isDirectory=$isDirectory"
+        return "$path isDirectory=$isDirectory"
     }
 }

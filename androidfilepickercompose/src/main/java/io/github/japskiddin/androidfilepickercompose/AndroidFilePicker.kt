@@ -69,7 +69,7 @@ fun AndroidFilePickerContent(
     Scaffold(
         topBar = {
             ToolBar(
-                title = currentPickerFile?.filename ?: stringResource(id = R.string.afp_app_name),
+                title = currentPickerFile?.name ?: stringResource(id = R.string.afp_app_name),
                 onBackClick = { /*TODO*/ },
                 actions = {
                     if (canCreateDirectory) {

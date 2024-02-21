@@ -24,7 +24,7 @@ import io.github.japskiddin.androidfilepickercompose.ui.theme.AndroidFilePickerC
 @Composable
 fun FileList(files: List<PickerFile>, modifier: Modifier = Modifier) {
     LazyColumn(modifier = modifier.fillMaxSize()) {
-        items(items = files, key = { file -> file.filepath }) { file ->
+        items(items = files, key = { file -> file.path }) { file ->
             FileItem(file = file, modifier = modifier)
         }
     }
@@ -39,11 +39,11 @@ fun FileItem(modifier: Modifier = Modifier, file: PickerFile) {
             } else {
                 painterResource(id = R.drawable.ic_afp_file)
             },
-            contentDescription = file.filename,
+            contentDescription = file.name,
             modifier = modifier.size(36.dp).align(Alignment.CenterVertically)
         )
         Column(modifier = modifier.padding(start = 16.dp)) {
-            Text(text = file.filename)
+            Text(text = file.name)
             Text(
                 text = if (file.isDirectory) {
                     stringResource(id = R.string.directory)

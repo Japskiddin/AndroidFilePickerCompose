@@ -7,7 +7,6 @@ import android.os.Build.VERSION.SDK_INT
 import android.os.Build.VERSION_CODES.M
 import android.os.Build.VERSION_CODES.N
 import android.os.Environment
-import android.os.StatFs
 import android.os.storage.StorageManager
 import android.os.storage.StorageVolume
 import android.text.TextUtils
@@ -16,7 +15,6 @@ import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat.getSystemService
 import io.github.japskiddin.androidfilepickercompose.BuildConfig
 import io.github.japskiddin.androidfilepickercompose.R
-import io.github.japskiddin.androidfilepickercompose.data.model.StorageBean
 import io.github.japskiddin.androidfilepickercompose.data.model.StorageDirectory
 import io.github.japskiddin.androidfilepickercompose.filesystem.usb.SingletonUsbOtg
 import io.github.japskiddin.androidfilepickercompose.utils.OTGUtil
@@ -24,7 +22,6 @@ import io.github.japskiddin.androidfilepickercompose.utils.checkStoragePermissio
 import java.io.File
 import java.io.IOException
 import java.lang.reflect.Field
-import java.lang.reflect.Method
 import java.util.Collections
 import java.util.Locale
 import java.util.regex.Pattern
@@ -223,54 +220,6 @@ fun canListFiles(f: File): Boolean {
     return f.canRead() && f.isDirectory
 }
 
-fun getStorageData(context: Context): ArrayList<StorageBean>? {
-    val storageManager: StorageManager =
-        context.getSystemService(Context.STORAGE_SERVICE) as StorageManager
-    return try {
-        val getVolumeList: Method = storageManager.javaClass.getMethod("getVolumeList")
-        val storageVolumeClazz = Class.forName("android.os.storage.StorageVolume")
-        val getPath: Method = storageVolumeClazz.getMethod("getPath")
-        val isRemovable: Method = storageVolumeClazz.getMethod("isRemovable")
-        var mGetState: Method? = null
-        try {
-            mGetState = storageVolumeClazz.getMethod("getState")
-        } catch (ignored: NoSuchMethodException) {
-        }
-        val invokeVolumeList: Any = getVolumeList.invoke(storageManager) as Any
-        val length: Int = java.lang.reflect.Array.getLength(invokeVolumeList)
-        val list: ArrayList<StorageBean> = ArrayList()
-        for (i in 0 until length) {
-            val storageVolume: Any? = java.lang.reflect.Array.get(invokeVolumeList, i)
-            val path = getPath.invoke(storageVolume) as String
-            val removable = isRemovable.invoke(storageVolume) as Boolean
-            val state: String? = if (mGetState != null) {
-                mGetState.invoke(storageVolume)?.toString()
-            } else {
-                @Suppress("DEPRECATION")
-                Environment.getStorageState(File(path))
-            }
-            var totalSize: Long = 0
-            var availableSize: Long = 0
-            if (Environment.MEDIA_MOUNTED == state) {
-                totalSize = getTotalSize(path)
-                availableSize = getAvailableSize(path)
-            }
-            val msg = "path=$path" +
-                    ", removable=$removable" +
-                    ", state=$state" +
-                    ", total size=$totalSize (${formatSpace(totalSize)})" +
-                    ", available size=$availableSize (${formatSpace(availableSize)})"
-            if (BuildConfig.DEBUG) {
-                Log.e(TAG, msg)
-            }
-            list.add(StorageBean(path, state, removable, totalSize, availableSize))
-        }
-        list
-    } catch (e: Exception) {
-        null
-    }
-}
-
 @SuppressLint("PrivateApi")
 @TargetApi(N)
 fun getVolumeDirectory(volume: StorageVolume?): File {
@@ -281,45 +230,5 @@ fun getVolumeDirectory(volume: StorageVolume?): File {
     } catch (e: java.lang.Exception) {
         // This shouldn't fail, as mPath has been there in every version
         throw RuntimeException(e)
-    }
-}
-
-private fun getTotalSize(path: String): Long {
-    return try {
-        val statFs = StatFs(path)
-        val blockSize: Long = statFs.blockSizeLong
-        val blockCountLong: Long = statFs.blockCountLong
-        blockSize * blockCountLong
-    } catch (e: Exception) {
-        0
-    }
-}
-
-private fun getAvailableSize(path: String): Long {
-    return try {
-        val statFs = StatFs(path)
-        val blockSize: Long = statFs.blockSizeLong
-        val availableBlocks: Long = statFs.availableBlocksLong
-        availableBlocks * blockSize
-    } catch (e: Exception) {
-        0
-    }
-}
-
-private fun formatSpace(space: Long): String {
-    if (space <= 0) {
-        return "0"
-    }
-    val gbValue = space.toDouble() / A_GB
-    return if (gbValue >= 1) {
-        String.format(Locale.getDefault(), "%.2fGB", gbValue)
-    } else {
-        val mbValue = space.toDouble() / A_MB
-        if (mbValue >= 1) {
-            String.format(Locale.getDefault(), "%.2fMB", mbValue)
-        } else {
-            val kbValue = space.toDouble() / A_KB
-            String.format(Locale.getDefault(), "%.2fKB", kbValue)
-        }
     }
 }
