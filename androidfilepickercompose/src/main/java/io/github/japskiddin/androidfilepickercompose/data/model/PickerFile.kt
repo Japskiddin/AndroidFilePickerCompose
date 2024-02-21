@@ -6,7 +6,7 @@ data class PickerFile(
     @JvmField
     val name: String,
     @JvmField
-    val isDirectory: Boolean
+    val isDirectory: Boolean,
 ) : Comparable<PickerFile> {
     override fun compareTo(other: PickerFile): Int {
         return path.compareTo(other.path)

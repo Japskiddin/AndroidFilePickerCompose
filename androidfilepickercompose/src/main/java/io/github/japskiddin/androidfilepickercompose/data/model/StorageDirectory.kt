@@ -9,5 +9,5 @@ data class StorageDirectory(
     val name: String,
     @JvmField
     @DrawableRes
-    val iconRes: Int
+    val iconRes: Int,
 )

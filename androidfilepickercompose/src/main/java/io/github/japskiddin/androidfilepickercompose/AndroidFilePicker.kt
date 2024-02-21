@@ -36,7 +36,7 @@ fun AndroidFilePicker(
     modifier: Modifier = Modifier,
     isDirectorySelect: Boolean = false,
     canCreateDirectory: Boolean = false,
-    pickerViewModel: PickerViewModel = viewModel()
+    pickerViewModel: PickerViewModel = viewModel(),
 ) {
     val context = LocalContext.current
     pickerViewModel.initStorages(context)
@@ -52,7 +52,7 @@ fun AndroidFilePicker(
                 currentPickerFile = currentPickerFile,
                 isDirectorySelect = isDirectorySelect,
                 canCreateDirectory = canCreateDirectory,
-                storages = storages
+                storages = storages,
             )
         }
     }
@@ -64,7 +64,7 @@ fun AndroidFilePickerContent(
     isDirectorySelect: Boolean,
     canCreateDirectory: Boolean,
     currentPickerFile: PickerFile?,
-    storages: List<StorageDirectory>
+    storages: List<StorageDirectory>,
 ) {
     Scaffold(
         topBar = {
@@ -120,7 +120,7 @@ fun AndroidFilePickerContent(
 @Preview(
     name = "View Dark mode",
     showBackground = true,
-    uiMode = Configuration.UI_MODE_NIGHT_YES
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
 )
 @Composable
 fun AndroidFilePickerPreview() {

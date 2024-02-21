@@ -2,7 +2,7 @@ package io.github.japskiddin.androidfilepickercompose.ui.components
 
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.ArrowBack
+import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -21,7 +21,7 @@ fun ToolBar(
     title: String,
     onBackClick: () -> Unit,
     actions: @Composable RowScope.() -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     TopAppBar(
         title = { Text(text = title) },
@@ -29,7 +29,7 @@ fun ToolBar(
         navigationIcon = {
             IconButton(onClick = onBackClick) {
                 Icon(
-                    imageVector = Icons.Rounded.ArrowBack,
+                    imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
                     contentDescription = stringResource(
                         id = R.string.afp_back
                     )
