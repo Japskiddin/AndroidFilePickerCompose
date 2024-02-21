@@ -2,10 +2,10 @@ package io.github.japskiddin.androidfilepickercompose.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
-
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
+val BlueEyes = Color(0xFF1E65CC)
+val Thunder = Color(0xFF2E2E2E)
+val BalticSea = Color(0xFF2B2B2B)
+val CharcoalGrey = Color(0xFF424242)
+val Iron = Color(0xFFD8D8D8)
+val Gainsboro = Color(0xFFDFDFDF)
+val Silver = Color(0xFFC7C7C7)

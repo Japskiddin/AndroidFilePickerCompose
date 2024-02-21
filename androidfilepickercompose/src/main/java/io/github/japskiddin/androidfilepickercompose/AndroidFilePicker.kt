@@ -120,7 +120,10 @@ fun AndroidFilePickerContent(
                         }
                     }
                     if (currentPickerFile == null) {
-                        StorageList(storages = storages)
+                        StorageList(
+                            storages = storages,
+                            onStorageClick = {},
+                        )
                     } else {
                         FileList(files = mutableListOf())
                     }
@@ -142,12 +145,24 @@ fun AndroidFilePickerContent(
 )
 @Composable
 fun AndroidFilePickerPreview() {
+    val storages = listOf(
+        StorageDirectory(
+            path = "storage/emulated/0",
+            name = "Внутренняя память",
+            iconRes = R.drawable.ic_drawer_root
+        ),
+        StorageDirectory(
+            path = "sdcard1",
+            name = "SD Card",
+            iconRes = R.drawable.ic_sd_storage
+        )
+    )
     AndroidFilePickerComposeTheme(dynamicColor = false) {
         AndroidFilePickerContent(
             currentPickerFile = null,
             isDirectorySelect = true,
             canCreateDirectory = false,
-            storages = emptyList(),
+            storages = storages,
             isBackAvailable = false,
             toolbarTitle = "Title",
         )
