@@ -14,9 +14,13 @@ import kotlinx.coroutines.flow.update
 class PickerViewModel : ViewModel() {
     private val _currentPickerFile = MutableStateFlow<PickerFile?>(null)
     private val _storages = MutableStateFlow<MutableList<StorageDirectory>>(mutableListOf())
+    private val _isBackAvailable = MutableStateFlow(false)
+    private val _toolbarTitle = MutableStateFlow("")
 
     val currentPickerFile: StateFlow<PickerFile?> = _currentPickerFile
     val storages: StateFlow<List<StorageDirectory>> = _storages
+    val isBackAvailable: StateFlow<Boolean> = _isBackAvailable
+    val toolbarTitle: StateFlow<String> = _toolbarTitle
 
     fun initStorages(context: Context) {
         // TODO: завернуть в корутину?

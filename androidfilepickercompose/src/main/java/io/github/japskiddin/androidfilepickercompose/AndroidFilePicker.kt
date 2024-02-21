@@ -49,11 +49,15 @@ fun AndroidFilePicker(
         ) {
             val currentPickerFile by pickerViewModel.currentPickerFile.collectAsState()
             val storages by pickerViewModel.storages.collectAsState()
+            val isBackAvailable by pickerViewModel.isBackAvailable.collectAsState()
+            val toolbarTitle by pickerViewModel.toolbarTitle.collectAsState()
             AndroidFilePickerContent(
                 currentPickerFile = currentPickerFile,
                 isDirectorySelect = isDirectorySelect,
                 canCreateDirectory = canCreateDirectory,
                 storages = storages,
+                isBackAvailable = isBackAvailable,
+                toolbarTitle = toolbarTitle
             )
         }
     }
@@ -66,13 +70,15 @@ fun AndroidFilePickerContent(
     canCreateDirectory: Boolean,
     currentPickerFile: PickerFile?,
     storages: List<StorageDirectory>,
+    isBackAvailable: Boolean,
+    toolbarTitle: String,
 ) {
     Scaffold(
         topBar = {
             ToolBar(
-                title = currentPickerFile?.name ?: stringResource(id = R.string.afp_select_storage),
+                title = toolbarTitle.ifEmpty { stringResource(id = R.string.afp_select_storage) },
                 navigationIcon = {
-                    if (currentPickerFile != null) {
+                    if (isBackAvailable) {
                         IconButton(onClick = { }) {
                             Icon(
                                 imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
@@ -141,7 +147,9 @@ fun AndroidFilePickerPreview() {
             currentPickerFile = null,
             isDirectorySelect = true,
             canCreateDirectory = false,
-            storages = emptyList()
+            storages = emptyList(),
+            isBackAvailable = false,
+            toolbarTitle = "Title",
         )
     }
 }
